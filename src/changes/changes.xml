@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Change Notes</title>
+    <author email="andre.winkler@web.de">Andre Winkler</author>
+  </properties>
+  <body>
+    <release version="awtools-mail-1.2_a" date="2015-02-23"
+         description="POM update">
+         <action dev="andrewinkler" type="removed" date="2015-02-23">
+        Removed the assembly configuration from the POM. Was never used!
+      </action>
+    </release>
+
+    <release version="awtools-mail-1.2" date="2015-01-15"
+         description="POM update">
+      <action dev="andrewinkler" type="add" date="2015-01-15">
+        Parent POM update.
+      </action>
+    </release>
+    
+    <release version="awtools-mail-1.1" date="2013-03-21"
+         description="Mal abwarten">
+      <action dev="andrewinkler" type="add" date="2013-01-26">
+        Update to Java 7.
+      </action>
+    </release>
+  
+    <release version="awtools-mail-1.0.2" date="2011-12-20"
+         description="Version update">
+      <action dev="andrewinkler" type="fix" date="2012-01-21">
+        MailUtils#getBody() should not throw an IllegalArgumentException.
+        An IOException is here better, because it is a more natural
+        exception type.
+      </action>
+    </release>
+
+    <release version="awtools-mail-1.0.2-M1" date="2011-12-20"
+         description="Version update">
+      <action dev="andrewinkler" type="update" date="2011-12-03">
+        Update to Maven 3.
+      </action>
+    </release>
+
+    <release version="awtools-mail-1.0.1" date="2011-01-09"
+         description="Version update">
+      <action dev="andrewinkler" type="update" date="2010-09-12">
+        Refactored the classes DefaultPOP3Receiver and MailUtils
+      </action>
+      <action dev="andrewinkler" type="update" date="2010-09-03">
+        Updated the reference to Java-Mail. The reference directs to the
+        new Maven repository version of Java-Mail.
+      </action>
+    </release>
+
+    <release version="awtools-mail-1.0" date="2010-07-22"
+         description="Mal abwarten">
+      <action dev="andrewinkler" type="add" date="2010-07-22">
+        Removed the de.gluehloch.bean package to an own project
+        'awtools-mail'.
+      </action>
+    </release>
+
+  </body>
+  <footer>
+    <legal>
+      Copyright (c) @year@ The 'awtools-mail' project. All rights reserved.
+      $Revision: 4013 $ $Date: 2015-02-23 17:52:20 +0100 (Mon, 23 Feb 2015) $
+    </legal>
+  </footer>
+</document>
