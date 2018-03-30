@@ -45,8 +45,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Default Implementierung des {@link POP3Receiver}.
  * 
- * @version $LastChangedRevision: 2732 $ $LastChangedDate: 2011-01-04 15:53:44 +0100 (Di, 04 Jan 2011) $
- * @author by Andre Winkler, $LastChangedBy: andrewinkler $
+ * @author Andre Winkler
  */
 public final class DefaultPOP3Receiver implements POP3Receiver {
 
@@ -83,10 +82,14 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
     /**
      * Konstruktor.
      * 
-     * @param _host Der Mail-Server.
-     * @param _port Der Mail-Port.
-     * @param _user Der Mail-User.
-     * @param _password Das Mail-Password.
+     * @param _host
+     *            Der Mail-Server.
+     * @param _port
+     *            Der Mail-Port.
+     * @param _user
+     *            Der Mail-User.
+     * @param _password
+     *            Das Mail-Password.
      */
     public DefaultPOP3Receiver(final String _host, final int _port,
             final String _user, final String _password) {
@@ -112,7 +115,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         try {
             openSession();
             openInbox();
-    
+
             int numberOfMessages = numberOfMessages();
             if (numberOfMessages == 0) {
                 fireFindNoMailsEvent();
@@ -225,7 +228,8 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
                 ReceiverState.RECEIVERSTATE_CONNECTED,
                 ReceiverState.RECEIVERSTATE_FAILED);
 
-        throw new MailDownloadException("Unable to get the default folder.", ex);
+        throw new MailDownloadException("Unable to get the default folder.",
+                ex);
     }
 
     private void openSession() {
@@ -276,7 +280,8 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         return messages;
     }
 
-    public void addPropertyChangeListener(final PropertyChangeListener listener) {
+    public void addPropertyChangeListener(
+            final PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 

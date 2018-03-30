@@ -1,8 +1,7 @@
 /*
- * $Id: MailUtilsTest.java 2563 2010-09-20 12:07:54Z andrewinkler $
  * ============================================================================
  * Project awtools-mail
- * Copyright (c) 2004-2010 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2004-2018 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -24,7 +23,7 @@
 
 package de.awtools.mail;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,8 +37,7 @@ import org.junit.Test;
 /**
  * Utility für die Mail Bearbeitung.
  *
- * @version $LastChangedRevision: 2563 $ $LastChangedDate: 2010-09-20 14:07:54 +0200 (Mo, 20 Sep 2010) $
- * @author by Andre Winkler, $LastChangedBy: andrewinkler $
+ * @author by Andre Winkler
  */
 public class MailUtilsTest {
 

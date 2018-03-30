@@ -1,8 +1,7 @@
 /*
- * $Id: POP3Receiver.java 2558 2010-09-12 13:04:04Z andrewinkler $
  * ============================================================================
  * Project awtools-mail
- * Copyright (c) 2004-2010 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2004-2018 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -29,64 +28,23 @@ import java.util.List;
 
 import javax.mail.Message;
 
-import org.apache.commons.lang.enums.Enum;
-
 /**
  * Read mails from a POP3 account.
  * 
- * @version $LastChangedRevision: 2558 $ $LastChangedDate: 2010-09-12 15:04:04 +0200 (So, 12 Sep 2010) $
- * @author by Andre Winkler, $LastChangedBy: andrewinkler $
+ * @author Andre Winkler
  */
 public interface POP3Receiver {
 
     /** Der Name der Eigenschaft 'state'. */
-    public static final String PROPERTY_STATE = "state";
+    public final String PROPERTY_STATE = "state";
 
     /** Der Name der Eigenschaft 'mailNum'. Anzahl der Mails. */
-    public static final String PROPERTY_MAILNUM = "mailNum";
+    public final String PROPERTY_MAILNUM = "mailNum";
 
     /**
      * Der Name der Eigenschaft 'mailCounter'. Zählt die mails (0 .. mainNum-1).
      */
-    public static final String PROPERTY_COUNTER = "mailCounter";
-
-    /**
-     * Bildet die verschiedenen Zustände ab, die während des Mailempfangs
-     * auftreten können.
-     */
-    public static class ReceiverState extends Enum {
-
-        /** serial version id */
-        private static final long serialVersionUID = 6706344924026475104L;
-
-        /** Initialisierungszustand. */
-        public static final ReceiverState RECEIVERSTATE_INIT =
-                new ReceiverState("init");
-
-        /** Versuch Verbindungsaufbau. */
-        public static final ReceiverState RECEIVERSTATE_TRY_CONNECT =
-                new ReceiverState("try_connect");
-
-        /** Verbindungsaufbau hergestellt. */
-        public static final ReceiverState RECEIVERSTATE_CONNECTED =
-                new ReceiverState("connected");
-
-        /** Vorgang abgebrochen. */
-        public static final ReceiverState RECEIVERSTATE_FAILED =
-                new ReceiverState("failed");
-
-        /** Vorgang beendet. Keine Mails vorhanden. */
-        public static final ReceiverState RECEIVERSTATE_NO_MAILS =
-                new ReceiverState("noMails");
-
-        /** Vorgang beendet. Alle Mails abgeholt. */
-        public static final ReceiverState RECEIVERSTATE_READY =
-                new ReceiverState("mailsReceived");
-
-        private ReceiverState(final String name) {
-            super(name);
-        }
-    };
+    public final String PROPERTY_COUNTER = "mailCounter";
 
     /**
      * Startet den 'Download' der Mails aus dem konfigurierten POP3 Account.
