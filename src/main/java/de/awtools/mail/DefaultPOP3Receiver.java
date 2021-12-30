@@ -44,8 +44,7 @@ import org.slf4j.LoggerFactory;
 public final class DefaultPOP3Receiver implements POP3Receiver {
 
     /** Der private Logger der Klasse. */
-    private final Logger log = LoggerFactory
-            .getLogger(DefaultPOP3Receiver.class);
+    private final Logger log = LoggerFactory.getLogger(DefaultPOP3Receiver.class);
 
     /** Eine Mail-Session. */
     private Session session;
@@ -85,9 +84,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
      * @param _password
      *            Das Mail-Password.
      */
-    public DefaultPOP3Receiver(final String _host, final int _port,
-            final String _user, final String _password) {
-
+    public DefaultPOP3Receiver(final String _host, final int _port, final String _user, final String _password) {
         propertyChangeSupport = new PropertyChangeSupport(this);
 
         Properties props = System.getProperties();
@@ -146,8 +143,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         try {
             folder.fetch(messagesToArray(), fp);
         } catch (MessagingException ex) {
-            throw new MailDownloadException("Unable to read the mail folder.",
-                    ex);
+            throw new MailDownloadException("Unable to read the mail folder.", ex);
         }
 
         log.debug("Fetched all mails.");
@@ -168,8 +164,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
 
         log.debug("Number of messages: {0}", numberOfMessages);
 
-        propertyChangeSupport.firePropertyChange(PROPERTY_MAILNUM, 0,
-                numberOfMessages);
+        propertyChangeSupport.firePropertyChange(PROPERTY_MAILNUM, 0, numberOfMessages);
 
         return numberOfMessages;
     }
@@ -204,8 +199,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         try {
             folder.open(Folder.READ_WRITE);
         } catch (MessagingException ex) {
-            throw new MailDownloadException("Unable to open the INBOX folder.",
-                    ex);
+            throw new MailDownloadException("Unable to open the INBOX folder.", ex);
         }
     }
 
@@ -222,12 +216,10 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
                 ReceiverState.RECEIVERSTATE_CONNECTED,
                 ReceiverState.RECEIVERSTATE_FAILED);
 
-        throw new MailDownloadException("Unable to get the default folder.",
-                ex);
+        throw new MailDownloadException("Unable to get the default folder.", ex);
     }
 
     private void openSession() {
-
         propertyChangeSupport.firePropertyChange(PROPERTY_STATE,
                 ReceiverState.RECEIVERSTATE_INIT,
                 ReceiverState.RECEIVERSTATE_TRY_CONNECT);
@@ -235,15 +227,13 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         try {
             store = session.getStore("pop3");
         } catch (NoSuchProviderException ex) {
-            throw new MailDownloadException("Unable to get the POP3 provider",
-                    ex);
+            throw new MailDownloadException("Unable to get the POP3 provider", ex);
         }
 
         try {
             store.connect(host, port, user, password);
         } catch (MessagingException ex) {
-            throw new MailDownloadException(
-                    "Unable to connect to POP3 account.", ex);
+            throw new MailDownloadException("Unable to connect to POP3 account.", ex);
         }
 
         log.debug("... Verbindungsaufbau hergestellt.");
@@ -258,15 +248,14 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
                 folder.close(false);
                 store.close();
             } catch (MessagingException ex) {
-                throw new MailDownloadException(
-                        "Unable to close the POP3 connection.");
+                throw new MailDownloadException("Unable to close the POP3 connection.");
             }
         }
     }
 
     // TODO: Concurrent access problems, if download is running!
     public Message[] messagesToArray() {
-        return ((Message[]) messages.toArray(new Message[messages.size()]));
+        return (messages.toArray(new Message[messages.size()]));
     }
 
     // TODO: Concurrent access problems, if download is running!
@@ -274,13 +263,11 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         return messages;
     }
 
-    public void addPropertyChangeListener(
-            final PropertyChangeListener listener) {
+    public void addPropertyChangeListener(final PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(
-            final PropertyChangeListener listener) {
+    public void removePropertyChangeListener(final PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 

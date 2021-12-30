@@ -36,47 +36,47 @@ import jakarta.mail.*;
 public interface POP3Receiver {
 
     /** Der Name der Eigenschaft 'state'. */
-    public final String PROPERTY_STATE = "state";
+    String PROPERTY_STATE = "state";
 
     /** Der Name der Eigenschaft 'mailNum'. Anzahl der Mails. */
-    public final String PROPERTY_MAILNUM = "mailNum";
+    String PROPERTY_MAILNUM = "mailNum";
 
     /**
      * Der Name der Eigenschaft 'mailCounter'. Zählt die mails (0 .. mainNum-1).
      */
-    public final String PROPERTY_COUNTER = "mailCounter";
+    String PROPERTY_COUNTER = "mailCounter";
 
     /**
      * Startet den 'Download' der Mails aus dem konfigurierten POP3 Account.
      */
-    public void download();
+    void download();
 
     /**
      * Liefert alle Mails zurück.
      * 
      * @return Ein Array mit Mails.
      */
-    public Message[] messagesToArray();
+    Message[] messagesToArray();
 
     /**
      * Liefert alle Mails zurück.
      *
      * @return Eine Liste mit Mails.
      */
-    public List<Message> messagesToList();
+    List<Message> messagesToList();
 
     /**
      * Add a PropertyChangeListener.
      *
      * @param listener
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener);
+    void addPropertyChangeListener(PropertyChangeListener listener);
 
     /**
      * Remove a PropertyChangeListener.
      *
      * @param listener
      */
-    public void removePropertyChangeListener(PropertyChangeListener listener);
+    void removePropertyChangeListener(PropertyChangeListener listener);
 
 }
