@@ -85,8 +85,7 @@ public class MailUtilsTest {
 
     @Test
     public void testStringFormat() {
-        assertThat(String.format("Hallo %s", "Andre"))
-                .isEqualTo("Hallo Andre");
+        assertThat(String.format("Hallo %s", "Andre")).isEqualTo("Hallo Andre");
         assertThat(String.format("Hallo %d", 4711)).isEqualTo("Hallo 4711");
         assertThat(String.format("Hallo %d.", 4711)).isEqualTo("Hallo 4711.");
     }
