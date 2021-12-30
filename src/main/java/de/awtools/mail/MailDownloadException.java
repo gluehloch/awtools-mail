@@ -25,7 +25,7 @@
 
 package de.awtools.mail;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 /**
  * An exception for a failed mail download.

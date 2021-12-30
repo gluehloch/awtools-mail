@@ -26,7 +26,7 @@ package de.awtools.mail;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import javax.mail.Message;
+import jakarta.mail.*;
 
 /**
  * Read mails from a POP3 account.

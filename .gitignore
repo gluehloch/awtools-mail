@@ -1,8 +1,15 @@
-target
+# Maven
+/target
+
+# Eclipse
 .settings
 .buildpath
 .classpath
 .project
-tag.sh
+
+# IntelliJ
+.idea
+
+# Misc
 *.log
 

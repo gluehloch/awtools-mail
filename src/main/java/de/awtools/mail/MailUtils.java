@@ -26,10 +26,7 @@ package de.awtools.mail;
 
 import java.io.IOException;
 
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
+import jakarta.mail.*;
 
 /**
  * Utility to get the mail text content. This is a simplification and does not

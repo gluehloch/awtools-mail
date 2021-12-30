@@ -28,9 +28,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.Multipart;
+import jakarta.mail.*;
 
 import org.junit.Test;
 

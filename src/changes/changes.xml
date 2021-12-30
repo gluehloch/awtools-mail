@@ -5,10 +5,12 @@
     <author email="andre.winkler@web.de">Andre Winkler</author>
   </properties>
   <body>
-    <release version="awtools-mail-1.3.0" date="2016-??-??"
-         description="Update">
-         <action dev="andrewinkler" type="update" date="2016-02-03">
+    <release version="awtools-mail-1.3.0" date="2021-??-??" description="Update">
+      <action dev="andrewinkler" type="update" date="2016-02-03">
         Migration from Sourceforge to Github. Moving to Java 8.
+      </action>
+      <action dev="andrewinkler" type="update" date="2021-12-30">
+        Moving to JDK 16 and Jakarta-Mail 2.0.1.
       </action>
     </release>
 

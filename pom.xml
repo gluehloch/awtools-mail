@@ -19,99 +19,11 @@
   </description>
   <inceptionYear>2010</inceptionYear>
 
-  <scm>
-    <connection>
-      scm:svn:https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-mail/trunk
-    </connection>
-    <developerConnection>
-      scm:svn:https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-mail/trunk
-    </developerConnection>
-    <url>
-      scm:svn:https://svn.code.sf.net/p/betoffice/svn/awtools/awtools-mail/trunk
-    </url>
-  </scm>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <!-- <index>true</true> -->
-            <manifest>
-              <!-- <mainClass>com.mycompany.app.App</mainClass>  -->
-              <packageName>de.awtools.mail</packageName>
-              <!-- options -->
-              <addClasspath>true</addClasspath>
-              <!--
-                <addExtensions/>
-                <classpathPrefix/>
-              -->
-            </manifest>
-            <manifestEntries>
-              <mode>development</mode>
-              <url>${project.url}</url>
-              <Specification-Title>
-                ${project.groupId}-${project.artifactId}# Specification
-              </Specification-Title>
-              <Specification-Version>${project.version}</Specification-Version>
-              <Specification-Vendor>${project.url}</Specification-Vendor>
-              <Implementation-Title>
-                ${project.groupId}-${project.artifactId}# Implementation
-              </Implementation-Title>
-              <Implementation-Version>${project.version}</Implementation-Version>
-              <Implementation-Vendor>${project.url}</Implementation-Vendor>
-            </manifestEntries>
-            <!--
-                 Some problems with Maven jar plugin and Eclipse
-                 https://github.com/sonatype/m2eclipse-extras/issues/10
-            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-            -->
-          </archive>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <check>
-            <branchRate>85</branchRate>
-            <lineRate>85</lineRate>
-            <haltOnFailure>false</haltOnFailure>
-            <totalBranchRate>85</totalBranchRate>
-            <totalLineRate>85</totalLineRate>
-            <packageLineRate>85</packageLineRate>
-            <packageBranchRate>85</packageBranchRate>
-            <regexes>
-              <regex>
-                <pattern>de.awtools.mail.*</pattern>
-                <branchRate>0</branchRate>
-                <lineRate>0</lineRate>
-              </regex>
-            </regexes>
-          </check>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>clean</goal>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.4.3</version>
-      <scope>compile</scope>
+      <groupId>jakarta.mail</groupId>
+      <artifactId>jakarta.mail-api</artifactId>
+      <version>2.0.1</version>
     </dependency>
   </dependencies>
 

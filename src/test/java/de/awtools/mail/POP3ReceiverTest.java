@@ -33,10 +33,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.*;
 
+import jakarta.mail.internet.InternetAddress;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,10 +56,8 @@ public class POP3ReceiverTest {
 
     @Test
     public void testInternetAddress() throws Exception {
-        InternetAddress internetAddress =
-                new InternetAddress("andre.winkler@web.de");
-        assertThat(internetAddress.getAddress(),
-            equalTo("andre.winkler@web.de"));
+        InternetAddress internetAddress = new InternetAddress("andre.winkler@web.de");
+        assertThat(internetAddress.getAddress(), equalTo("andre.winkler@web.de"));
 
         Message message = mock(Message.class);
         when(message.getFrom()).thenReturn(address);
@@ -70,8 +67,7 @@ public class POP3ReceiverTest {
         when(message.getContent()).thenReturn("The content of the message.");
 
         POP3Receiver receiver = mock(POP3Receiver.class);
-        when(receiver.messagesToArray()).thenReturn(
-            new Message[] { message, message });
+        when(receiver.messagesToArray()).thenReturn(new Message[] { message, message });
         receiver.download();
         Message[] messages = receiver.messagesToArray();
 
@@ -81,8 +77,7 @@ public class POP3ReceiverTest {
         assertThat(messages.length, equalTo(2));
         assertThat(messages[0].getFrom(), equalTo(address));
         assertThat(messages[0].getSubject(), equalTo("This is a test."));
-        assertThat(messages[0].getContent().toString(),
-            equalTo("The content of the message."));
+        assertThat(messages[0].getContent().toString(), equalTo("The content of the message."));
     }
 
 }
