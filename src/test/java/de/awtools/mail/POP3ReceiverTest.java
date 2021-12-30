@@ -25,19 +25,19 @@
 
 package de.awtools.mail;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Date;
 
 import jakarta.mail.*;
 
 import jakarta.mail.internet.InternetAddress;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Testet die Klasse {@link POP3Receiver}.
@@ -49,7 +49,7 @@ public class POP3ReceiverTest {
 
     private Address[] address;
 
-    @Before
+    @BeforeAll
     public void setUp() throws Exception {
         address = new Address[] { new InternetAddress("andre.winkler@web.de") };
     }
@@ -57,7 +57,7 @@ public class POP3ReceiverTest {
     @Test
     public void testInternetAddress() throws Exception {
         InternetAddress internetAddress = new InternetAddress("andre.winkler@web.de");
-        assertThat(internetAddress.getAddress(), equalTo("andre.winkler@web.de"));
+        assertThat(internetAddress.getAddress()).isEqualTo("andre.winkler@web.de");
 
         Message message = mock(Message.class);
         when(message.getFrom()).thenReturn(address);
@@ -74,10 +74,10 @@ public class POP3ReceiverTest {
         verify(receiver).download();
         verify(receiver).messagesToArray();
 
-        assertThat(messages.length, equalTo(2));
-        assertThat(messages[0].getFrom(), equalTo(address));
-        assertThat(messages[0].getSubject(), equalTo("This is a test."));
-        assertThat(messages[0].getContent().toString(), equalTo("The content of the message."));
+        assertThat(messages.length).isEqualTo(2);
+        assertThat(messages[0].getFrom()).isEqualTo(address);
+        assertThat(messages[0].getSubject()).isEqualTo("This is a test.");
+        assertThat(messages[0].getContent().toString()).isEqualTo("The content of the message.");
     }
 
 }

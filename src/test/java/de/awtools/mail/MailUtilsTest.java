@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 import jakarta.mail.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Utility für die Mail Bearbeitung.
