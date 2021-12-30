@@ -37,31 +37,24 @@ import jakarta.mail.*;
 
 import jakarta.mail.internet.InternetAddress;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
  * Testet die Klasse {@link POP3Receiver}.
  * 
- * @version $LastChangedRevision: 2333 $ $LastChangedDate: 2010-07-31 15:03:33 +0200 (Sa, 31 Jul 2010) $
- * @author by Andre Winkler, $LastChangedBy: andrewinkler $
+ * @author by Andre Winkler
  */
 public class POP3ReceiverTest {
 
-    private Address[] address;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        address = new Address[] { new InternetAddress("andre.winkler@web.de") };
-    }
-
     @Test
     public void testInternetAddress() throws Exception {
+        Address[] addresses = new Address[] { new InternetAddress("andre.winkler@web.de") };
+
         InternetAddress internetAddress = new InternetAddress("andre.winkler@web.de");
         assertThat(internetAddress.getAddress()).isEqualTo("andre.winkler@web.de");
 
         Message message = mock(Message.class);
-        when(message.getFrom()).thenReturn(address);
+        when(message.getFrom()).thenReturn(addresses);
         when(message.getSubject()).thenReturn("This is a test.");
         when(message.getSentDate()).thenReturn(new Date());
         when(message.getContentType()).thenReturn("text/plain");
@@ -76,7 +69,7 @@ public class POP3ReceiverTest {
         verify(receiver).messagesToArray();
 
         assertThat(messages.length).isEqualTo(2);
-        assertThat(messages[0].getFrom()).isEqualTo(address);
+        assertThat(messages[0].getFrom()).isEqualTo(addresses);
         assertThat(messages[0].getSubject()).isEqualTo("This is a test.");
         assertThat(messages[0].getContent().toString()).isEqualTo("The content of the message.");
     }
