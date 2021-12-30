@@ -36,7 +36,8 @@ import java.util.Date;
 import jakarta.mail.*;
 
 import jakarta.mail.internet.InternetAddress;
-import org.junit.jupiter.api.BeforeAll;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -49,7 +50,7 @@ public class POP3ReceiverTest {
 
     private Address[] address;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() throws Exception {
         address = new Address[] { new InternetAddress("andre.winkler@web.de") };
     }
