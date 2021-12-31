@@ -1,7 +1,7 @@
 /*
  * ============================================================================
  * Project awtools-mail
- * Copyright (c) 2004-2018 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2004-2021 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -23,10 +23,9 @@
 
 package de.awtools.mail;
 
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import jakarta.mail.*;
+import jakarta.mail.Message;
 
 /**
  * Read mails from a POP3 account.
@@ -34,17 +33,6 @@ import jakarta.mail.*;
  * @author Andre Winkler
  */
 public interface POP3Receiver {
-
-    /** Der Name der Eigenschaft 'state'. */
-    String PROPERTY_STATE = "state";
-
-    /** Der Name der Eigenschaft 'mailNum'. Anzahl der Mails. */
-    String PROPERTY_MAILNUM = "mailNum";
-
-    /**
-     * Der Name der Eigenschaft 'mailCounter'. Zählt die mails (0 .. mainNum-1).
-     */
-    String PROPERTY_COUNTER = "mailCounter";
 
     /**
      * Startet den 'Download' der Mails aus dem konfigurierten POP3 Account.
@@ -64,19 +52,5 @@ public interface POP3Receiver {
      * @return Eine Liste mit Mails.
      */
     List<Message> messagesToList();
-
-    /**
-     * Add a PropertyChangeListener.
-     *
-     * @param listener
-     */
-    void addPropertyChangeListener(PropertyChangeListener listener);
-
-    /**
-     * Remove a PropertyChangeListener.
-     *
-     * @param listener
-     */
-    void removePropertyChangeListener(PropertyChangeListener listener);
 
 }

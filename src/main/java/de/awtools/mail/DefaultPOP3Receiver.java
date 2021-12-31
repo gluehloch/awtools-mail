@@ -1,8 +1,7 @@
 /*
- * $Id: DefaultPOP3Receiver.java 2732 2011-01-04 14:53:44Z andrewinkler $
  * ============================================================================
  * Project awtools-mail
- * Copyright (c) 2004-2010 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2004-2021 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -25,16 +24,20 @@
 
 package de.awtools.mail;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import jakarta.mail.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.mail.FetchProfile;
+import jakarta.mail.Folder;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.NoSuchProviderException;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
 
 /**
  * Default Implementierung des {@link POP3Receiver}.
@@ -70,23 +73,15 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
     /** Mail Host. */
     private final String host;
 
-    private final PropertyChangeSupport propertyChangeSupport;
-
     /**
      * Konstruktor.
      * 
-     * @param _host
-     *            Der Mail-Server.
-     * @param _port
-     *            Der Mail-Port.
-     * @param _user
-     *            Der Mail-User.
-     * @param _password
-     *            Das Mail-Password.
+     * @param _host     Der Mail-Server.
+     * @param _port     Der Mail-Port.
+     * @param _user     Der Mail-User.
+     * @param _password Das Mail-Password.
      */
     public DefaultPOP3Receiver(final String _host, final int _port, final String _user, final String _password) {
-        propertyChangeSupport = new PropertyChangeSupport(this);
-
         Properties props = System.getProperties();
         session = Session.getDefaultInstance(props, null);
         session.setDebug(false);
@@ -108,9 +103,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
             openInbox();
 
             int numberOfMessages = numberOfMessages();
-            if (numberOfMessages == 0) {
-                fireFindNoMailsEvent();
-            } else {
+            if (numberOfMessages > 0) {
                 readAllMails(numberOfMessages);
             }
         } finally {
@@ -120,7 +113,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
 
     private void readAllMails(int numberOfMessages) {
         for (int i = 1; i <= numberOfMessages; i++) {
-            log.debug(">>>> Received mail with index {0}.", i);
+            log.debug(">>>> Received mail with index {}.", i);
 
             try {
                 messages.add(folder.getMessage(i));
@@ -129,9 +122,6 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
                         "Unable to get message at index %d.", i);
                 throw new MailDownloadException(errorMessage, ex);
             }
-
-            propertyChangeSupport
-                    .firePropertyChange(PROPERTY_COUNTER, i - 1, i);
         }
 
         FetchProfile fp = new FetchProfile();
@@ -147,10 +137,6 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         }
 
         log.debug("Fetched all mails.");
-
-        propertyChangeSupport.firePropertyChange(PROPERTY_STATE,
-                ReceiverState.RECEIVERSTATE_CONNECTED,
-                ReceiverState.RECEIVERSTATE_READY);
     }
 
     private int numberOfMessages() {
@@ -162,17 +148,9 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
                     "Unable to count the number of mails.", ex);
         }
 
-        log.debug("Number of messages: {0}", numberOfMessages);
-
-        propertyChangeSupport.firePropertyChange(PROPERTY_MAILNUM, 0, numberOfMessages);
+        log.debug("Number of messages: {}", numberOfMessages);
 
         return numberOfMessages;
-    }
-
-    private void fireFindNoMailsEvent() {
-        propertyChangeSupport.firePropertyChange(PROPERTY_STATE,
-                ReceiverState.RECEIVERSTATE_CONNECTED,
-                ReceiverState.RECEIVERSTATE_NO_MAILS);
     }
 
     private void openInbox() {
@@ -204,26 +182,14 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
     }
 
     private void unableToGetInboxFolder(MessagingException ex) {
-        propertyChangeSupport.firePropertyChange(PROPERTY_STATE,
-                ReceiverState.RECEIVERSTATE_CONNECTED,
-                ReceiverState.RECEIVERSTATE_FAILED);
-
         throw new MailDownloadException("Unable to get folder INBOX.", ex);
     }
 
     private void unableToGetDefaultFolder(MessagingException ex) {
-        propertyChangeSupport.firePropertyChange(PROPERTY_STATE,
-                ReceiverState.RECEIVERSTATE_CONNECTED,
-                ReceiverState.RECEIVERSTATE_FAILED);
-
         throw new MailDownloadException("Unable to get the default folder.", ex);
     }
 
     private void openSession() {
-        propertyChangeSupport.firePropertyChange(PROPERTY_STATE,
-                ReceiverState.RECEIVERSTATE_INIT,
-                ReceiverState.RECEIVERSTATE_TRY_CONNECT);
-
         try {
             store = session.getStore("pop3");
         } catch (NoSuchProviderException ex) {
@@ -237,9 +203,6 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         }
 
         log.debug("... Verbindungsaufbau hergestellt.");
-        propertyChangeSupport.firePropertyChange(PROPERTY_STATE,
-                ReceiverState.RECEIVERSTATE_TRY_CONNECT,
-                ReceiverState.RECEIVERSTATE_CONNECTED);
     }
 
     private void closeFolder() {
@@ -253,40 +216,12 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         }
     }
 
-    // TODO: Concurrent access problems, if download is running!
     public Message[] messagesToArray() {
         return (messages.toArray(new Message[messages.size()]));
     }
 
-    // TODO: Concurrent access problems, if download is running!
     public List<Message> messagesToList() {
         return messages;
-    }
-
-    public void addPropertyChangeListener(final PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(final PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuffer buf = new StringBuffer();
-        buf.append("Auslesen der Mails aus dem POP3-Account...");
-        buf.append("Host=");
-        buf.append(host);
-        buf.append(", User=");
-        buf.append(user);
-        buf.append(", Pwd=");
-        buf.append(password);
-        buf.append(", Port=");
-        buf.append(port);
-        return buf.toString();
     }
 
 }

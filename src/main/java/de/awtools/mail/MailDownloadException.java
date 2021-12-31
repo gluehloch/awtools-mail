@@ -1,8 +1,7 @@
 /*
- * $Id: MailDownloadException.java 2558 2010-09-12 13:04:04Z andrewinkler $
  * ============================================================================
  * Project awtools-mail
- * Copyright (c) 2004-2010 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2004-2021 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -30,8 +29,7 @@ import jakarta.mail.MessagingException;
 /**
  * An exception for a failed mail download.
  *
- * @version $LastChangedRevision: 2558 $ $LastChangedDate: 2010-09-12 15:04:04 +0200 (So, 12 Sep 2010) $
- * @author by Andre Winkler, $LastChangedBy: andrewinkler $
+ * @author by Andre Winkler
  */
 public class MailDownloadException extends RuntimeException {
 

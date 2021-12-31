@@ -58,13 +58,28 @@
             <version>4.2.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- TODO A little bit strange to carry this dependency only for testing? -->
+        <!-- Test GreenMail -->
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+            <version>2.0.0-alpha-2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail-junit5</artifactId>
+            <version>2.0.0-alpha-2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- TODO A little bit strange to carry this dependency only for testing?
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
             <scope>test</scope>
         </dependency>
+        -->
 
         <!-- JUnit 5 -->
         <dependency>

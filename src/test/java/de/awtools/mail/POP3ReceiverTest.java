@@ -25,19 +25,25 @@
 
 package de.awtools.mail;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Date;
 
-import jakarta.mail.*;
-
-import jakarta.mail.internet.InternetAddress;
-
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.pop3.Pop3Server;
+import com.icegreen.greenmail.util.ServerSetupTest;
+
+import jakarta.mail.Address;
+import jakarta.mail.Message;
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * Testet die Klasse {@link POP3Receiver}.
@@ -46,8 +52,16 @@ import org.junit.jupiter.api.Test;
  */
 public class POP3ReceiverTest {
 
+    @RegisterExtension
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.POP3);
+
+    @Tag("pop3")
+    @DisplayName("Receive POP3 message")
     @Test
-    public void testInternetAddress() throws Exception {
+    void testInternetAddress() throws Exception {
+        Pop3Server pop3 = greenMail.getPop3();
+        pop3.createSession();
+        
         Address[] addresses = new Address[] { new InternetAddress("andre.winkler@web.de") };
 
         InternetAddress internetAddress = new InternetAddress("andre.winkler@web.de");
