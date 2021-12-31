@@ -59,7 +59,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
     private Folder folder;
 
     /** Eine Liste mit allen <code>Message</code>s. */
-    private List<Message> messages = new ArrayList<Message>();
+    private final List<Message> messages = new ArrayList<>();
 
     /** Mail User. */
     private final String user;
@@ -189,7 +189,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         throw new MailDownloadException("Unable to get the default folder.", ex);
     }
 
-    private void openSession() {
+    private void openSession(Session session) {
         try {
             store = session.getStore("pop3");
         } catch (NoSuchProviderException ex) {

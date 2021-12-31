@@ -32,6 +32,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+import jakarta.mail.Session;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -53,15 +54,17 @@ import jakarta.mail.internet.InternetAddress;
 public class POP3ReceiverTest {
 
     @RegisterExtension
-    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.POP3);
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.ALL);
 
     @Tag("pop3")
     @DisplayName("Receive POP3 message")
     @Test
-    void testInternetAddress() throws Exception {
+    void receiveMailsFromPOP3() throws Exception {
         Pop3Server pop3 = greenMail.getPop3();
-        pop3.createSession();
-        
+        Session session = pop3.createSession();
+
+        POP3Receiver pop3Receiver = new DefaultPOP3Receiver();
+
         Address[] addresses = new Address[] { new InternetAddress("andre.winkler@web.de") };
 
         InternetAddress internetAddress = new InternetAddress("andre.winkler@web.de");
