@@ -36,8 +36,8 @@ import java.util.List;
 import com.icegreen.greenmail.user.GreenMailUser;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
+import jakarta.mail.*;
+import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -48,8 +48,6 @@ import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.pop3.Pop3Server;
 import com.icegreen.greenmail.util.ServerSetupTest;
 
-import jakarta.mail.Address;
-import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 
 /**
@@ -59,13 +57,8 @@ import jakarta.mail.internet.InternetAddress;
  */
 public class POP3ReceiverTest {
 
-    private static final String USER_PASSWORD = "abcdef123";
-    private static final String USER_NAME = "hascode";
     private static final String EMAIL_USER_ADDRESS = "hascode@localhost";
     private static final String EMAIL_TO = "someone@localhost.com";
-    private static final String EMAIL_SUBJECT = "Test E-Mail";
-    private static final String EMAIL_TEXT = "This is a test e-mail.";
-    private static final String LOCALHOST = "127.0.0.1";
 
     @RegisterExtension
     static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.ALL);
@@ -78,30 +71,33 @@ public class POP3ReceiverTest {
 
         final String subject = GreenMailUtil.random();
         final String body = GreenMailUtil.random();
+
         MimeMessage message = createMimeMessage(subject, body); // Construct message
-        GreenMailUser user = greenMail.setUser("wael@localhost", "waelc", "soooosecret");
+        GreenMailUser user = greenMail.setUser("test@localhost", "test", "soooosecret");
         user.deliver(message);
 
         Pop3Server pop3 = greenMail.getPop3();
         Session session = pop3.createSession();
 
         POP3Receiver pop3Receiver = new DefaultPOP3Receiver();
-        pop3Receiver.download(session, "localhost", -1, "test", "test");
+        pop3Receiver.download(session, "localhost", pop3.getPort(), user.getLogin(), user.getPassword());
         List<Message> messages = pop3Receiver.messagesToList();
 
-        Address[] addresses = new Address[] { new InternetAddress("andre.winkler@web.de") };
+        assertThat(messages).hasSize(1);
+        assertThat(messages.get(0).getFrom()[0].toString()).isEqualTo("test@localhost");
+        assertThat(messages.get(0).getSubject()).isEqualTo(subject);
 
-        InternetAddress internetAddress = new InternetAddress("andre.winkler@web.de");
-        assertThat(internetAddress.getAddress()).isEqualTo("andre.winkler@web.de");
-
-//        Message message = mock(Message.class);
-//        when(message.getFrom()).thenReturn(addresses);
-//        when(message.getSubject()).thenReturn("This is a test.");
-//        when(message.getSentDate()).thenReturn(new Date());
-//        when(message.getContentType()).thenReturn("text/plain");
-//        when(message.getContent()).thenReturn("The content of the message.");
+        assertThat(String.valueOf(messages.get(0).getContent())).isEqualTo(body);
 
         greenMail.stop();
+    }
+
+    @Tag("pop3")
+    @DisplayName("Create an InternetAddress")
+    @Test
+    void internetAddress() throws AddressException {
+        InternetAddress internetAddress = new InternetAddress("test@localhost");
+        assertThat(internetAddress.getAddress()).isEqualTo("test@localhost");
     }
 
     MimeMessage createMimeMessage(String subject, String body) throws MessagingException {

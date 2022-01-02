@@ -181,7 +181,8 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         }
 
         try {
-            folder.open(Folder.READ_WRITE);
+            // folder.open(Folder.READ_WRITE);
+            folder.open(Folder.READ_ONLY);
         } catch (MessagingException ex) {
             throw new MailDownloadException("Unable to open the INBOX folder.", ex);
         }
