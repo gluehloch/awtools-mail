@@ -26,6 +26,7 @@ package de.awtools.mail;
 import java.util.List;
 
 import jakarta.mail.Message;
+import jakarta.mail.Session;
 
 /**
  * Read mails from a POP3 account.
@@ -36,8 +37,14 @@ public interface POP3Receiver {
 
     /**
      * Startet den 'Download' der Mails aus dem konfigurierten POP3 Account.
+     *
+     * @param session Mail-Session
+     * @param host Host
+     * @param port Port
+     * @param user Username
+     * @param password Password     *
      */
-    void download();
+    void download(Session session, String host, int port, String user, String password);
 
     /**
      * Liefert alle Mails zurück.

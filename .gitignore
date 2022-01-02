@@ -9,6 +9,7 @@
 
 # IntelliJ
 .idea
+*.iml
 
 # Misc
 *.log

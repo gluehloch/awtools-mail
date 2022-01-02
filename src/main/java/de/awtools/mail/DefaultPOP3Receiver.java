@@ -49,8 +49,8 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
     /** Der private Logger der Klasse. */
     private final Logger log = LoggerFactory.getLogger(DefaultPOP3Receiver.class);
 
-    /** Eine Mail-Session. */
-    private Session session;
+//    /** Eine Mail-Session. */
+//    private Session session;
 
     /** Mail Store. */
     private Store store;
@@ -61,17 +61,17 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
     /** Eine Liste mit allen <code>Message</code>s. */
     private final List<Message> messages = new ArrayList<>();
 
-    /** Mail User. */
-    private final String user;
-
-    /** Mail Password. */
-    private final String password;
-
-    /** Mail Port. */
-    private final int port;
-
-    /** Mail Host. */
-    private final String host;
+//    /** Mail User. */
+//    private final String user;
+//
+//    /** Mail Password. */
+//    private final String password;
+//
+//    /** Mail Port. */
+//    private final int port;
+//
+//    /** Mail Host. */
+//    private final String host;
 
     /**
      * Konstruktor.
@@ -80,7 +80,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
      * @param _port     Der Mail-Port.
      * @param _user     Der Mail-User.
      * @param _password Das Mail-Password.
-     */
+     *
     public DefaultPOP3Receiver(final String _host, final int _port, final String _user, final String _password) {
         Properties props = System.getProperties();
         session = Session.getDefaultInstance(props, null);
@@ -91,15 +91,22 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         user = _user;
         password = _password;
     }
+    */
 
     /**
      * Startet den 'Download' der Mails aus dem konfigurierten POP3 Account.
+     * 
+     * @param session Mail-Session
+     * @param host Host
+     * @param port Port
+     * @param user Username
+     * @param password Password
      */
-    public void download() {
+    public void download(Session session, String host, int port, String user, String password) {
         closeFolder();
 
         try {
-            openSession();
+            openSession(session, host, port, user, password);
             openInbox();
 
             int numberOfMessages = numberOfMessages();
@@ -113,13 +120,12 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
 
     private void readAllMails(int numberOfMessages) {
         for (int i = 1; i <= numberOfMessages; i++) {
-            log.debug(">>>> Received mail with index {}.", i);
+            log.debug(">>>> Received an email with index {}.", i);
 
             try {
                 messages.add(folder.getMessage(i));
             } catch (MessagingException ex) {
-                String errorMessage = String.format(
-                        "Unable to get message at index %d.", i);
+                String errorMessage = String.format("Unable to get message at index %d.", i);
                 throw new MailDownloadException(errorMessage, ex);
             }
         }
@@ -189,7 +195,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         throw new MailDownloadException("Unable to get the default folder.", ex);
     }
 
-    private void openSession(Session session) {
+    private void openSession(Session session, String host, int port, String user, String password) {
         try {
             store = session.getStore("pop3");
         } catch (NoSuchProviderException ex) {
