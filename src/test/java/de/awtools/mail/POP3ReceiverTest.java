@@ -26,15 +26,10 @@
 package de.awtools.mail;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import java.util.Date;
 import java.util.List;
 
 import com.icegreen.greenmail.user.GreenMailUser;
-import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import jakarta.mail.*;
 import jakarta.mail.internet.AddressException;
@@ -79,9 +74,10 @@ public class POP3ReceiverTest {
         Pop3Server pop3 = greenMail.getPop3();
         Session session = pop3.createSession();
 
+        MailSession mailSession = new MailSession(session, "localhost", pop3.getPort(), user.getLogin(), user.getPassword());
+        
         POP3Receiver pop3Receiver = new DefaultPOP3Receiver();
-        pop3Receiver.download(session, "localhost", pop3.getPort(), user.getLogin(), user.getPassword());
-        List<Message> messages = pop3Receiver.messagesToList();
+        List<Message> messages = pop3Receiver.download(mailSession);
 
         assertThat(messages).hasSize(1);
         assertThat(messages.get(0).getFrom()[0].toString()).isEqualTo("test@localhost");

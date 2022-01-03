@@ -38,26 +38,8 @@ public interface POP3Receiver {
     /**
      * Startet den 'Download' der Mails aus dem konfigurierten POP3 Account.
      *
-     * @param session Mail-Session
-     * @param host Host
-     * @param port Port
-     * @param user Username
-     * @param password Password     *
+     * @param mailSession Mail-Session
      */
-    void download(Session session, String host, int port, String user, String password);
-
-    /**
-     * Liefert alle Mails zurück.
-     * 
-     * @return Ein Array mit Mails.
-     */
-    Message[] messagesToArray();
-
-    /**
-     * Liefert alle Mails zurück.
-     *
-     * @return Eine Liste mit Mails.
-     */
-    List<Message> messagesToList();
+    List<Message> download(MailSession mailSession);
 
 }
