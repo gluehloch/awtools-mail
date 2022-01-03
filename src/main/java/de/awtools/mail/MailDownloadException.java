@@ -1,7 +1,7 @@
 /*
  * ============================================================================
  * Project awtools-mail
- * Copyright (c) 2004-2021 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2004-2022 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -24,8 +24,6 @@
 
 package de.awtools.mail;
 
-import jakarta.mail.MessagingException;
-
 /**
  * An exception for a failed mail download.
  *
@@ -39,7 +37,7 @@ public class MailDownloadException extends RuntimeException {
         super(message);
     }
 
-    public MailDownloadException(String message, MessagingException throwable) {
+    public MailDownloadException(String message, Exception throwable) {
         super(message, throwable);
     }
 

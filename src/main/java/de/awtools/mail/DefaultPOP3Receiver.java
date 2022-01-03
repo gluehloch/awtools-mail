@@ -1,12 +1,12 @@
 /*
  * ============================================================================
  * Project awtools-mail
- * Copyright (c) 2004-2021 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2004-2022 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  *
- *  This library is free software; you can redistribute it and/or
+ *  This library is free software; you can redistribute it and/ord
  *  modify it under the terms of the GNU Lesser General Public
  *  License as published by the Free Software Foundation; either
  *  version 2.1 of the License, or (at your option) any later version.
@@ -109,12 +109,6 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
 
         log.debug("Fetched all mails.");
 
-        try {
-            messages.get(0).getSubject();
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-
         List<SimpleMailMessage> simpleMailMessages = new ArrayList<>();
         try {
             for (Message message : messages) {
@@ -130,7 +124,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
                 simpleMailMessages.add(simpleMailMessage);
             }
         } catch (IOException | MessagingException ex) {
-            throw new IllegalStateException(ex);
+            throw new MailDownloadException("Unable to read the mail folder.", ex);
         }
 
         return simpleMailMessages;
@@ -146,7 +140,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
 
     private static List<String> map(Address[] addresses) {
         if (addresses == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         } else {
             List<String> emailAddresses = new ArrayList<>();
             for (Address address : addresses) {
