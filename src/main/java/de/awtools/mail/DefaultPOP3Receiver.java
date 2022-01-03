@@ -24,18 +24,17 @@
 
 package de.awtools.mail;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.mail.FetchProfile;
-import jakarta.mail.Folder;
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.NoSuchProviderException;
-import jakarta.mail.Store;
 
 /**
  * Default Implementierung des {@link POP3Receiver}.
@@ -57,8 +56,9 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
      * Startet den 'Download' der Mails aus dem konfigurierten POP3 Account.
      * 
      * @param mailSession Mail-Konfiguration
+     * @return Eine Liste von {@link SimpleMailMessage}.
      */
-    public List<Message> download(MailSession mailSession) {
+    public List<SimpleMailMessage> download(MailSession mailSession) {
         closeFolder();
 
         try {
@@ -76,7 +76,7 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
         }
     }
 
-    private List<Message> readAllMails(int numberOfMessages) {
+    private List<SimpleMailMessage> readAllMails(int numberOfMessages) {
         List<Message> messages = new ArrayList<>();
 
         for (int i = 1; i <= numberOfMessages; i++) {
@@ -110,7 +110,45 @@ public final class DefaultPOP3Receiver implements POP3Receiver {
             throw new RuntimeException(e);
         }
 
-        return messages;
+        List<SimpleMailMessage> simpleMailMessages = new ArrayList<>();
+        try {
+            for (Message message : messages) {
+                SimpleMailMessage simpleMailMessage = new SimpleMailMessage(
+                        map(message.getFrom()),
+                        map(message.getRecipients(Message.RecipientType.TO)),
+                        map(message.getRecipients(Message.RecipientType.CC)),
+                        map(message.getRecipients(Message.RecipientType.BCC)),
+                        message.getReceivedDate(),
+                        message.getSentDate(),
+                        message.getSubject(),
+                        message.getContent().toString().strip());
+                simpleMailMessages.add(simpleMailMessage);
+            }
+        } catch (IOException | MessagingException ex) {
+            throw new IllegalStateException(ex);
+        }
+
+        return simpleMailMessages;
+    }
+
+    private static String map(Address address) {
+        if (address instanceof InternetAddress internetAddress) {
+            return internetAddress.getAddress();
+        } else {
+            return address.toString();
+        }
+    }
+
+    private static List<String> map(Address[] addresses) {
+        if (addresses == null) {
+            return Collections.EMPTY_LIST;
+        } else {
+            List<String> emailAddresses = new ArrayList<>();
+            for (Address address : addresses) {
+                emailAddresses.add(map(address));
+            }
+            return emailAddresses;
+        }
     }
 
     private int numberOfMessages() {

@@ -44,6 +44,7 @@ import com.icegreen.greenmail.pop3.Pop3Server;
 import com.icegreen.greenmail.util.ServerSetupTest;
 
 import jakarta.mail.internet.InternetAddress;
+import org.junit.platform.commons.util.StringUtils;
 
 /**
  * Testet die Klasse {@link POP3Receiver}.
@@ -77,13 +78,14 @@ public class POP3ReceiverTest {
         MailSession mailSession = new MailSession(session, "localhost", pop3.getPort(), user.getLogin(), user.getPassword());
         
         POP3Receiver pop3Receiver = new DefaultPOP3Receiver();
-        List<Message> messages = pop3Receiver.download(mailSession);
+        List<SimpleMailMessage> messages = pop3Receiver.download(mailSession);
 
         assertThat(messages).hasSize(1);
-        assertThat(messages.get(0).getFrom()[0].toString()).isEqualTo("test@localhost");
-        assertThat(messages.get(0).getSubject()).isEqualTo(subject);
+        SimpleMailMessage msg = messages.get(0);
 
-        assertThat(String.valueOf(messages.get(0).getContent())).isEqualTo(body);
+        assertThat(msg.from().get(0)).isEqualTo(EMAIL_TO);
+        assertThat(msg.subject()).isEqualTo(subject);
+        assertThat(messages.get(0).content()).isEqualTo(body);
 
         greenMail.stop();
     }

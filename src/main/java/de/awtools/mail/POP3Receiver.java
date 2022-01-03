@@ -39,7 +39,8 @@ public interface POP3Receiver {
      * Startet den 'Download' der Mails aus dem konfigurierten POP3 Account.
      *
      * @param mailSession Mail-Session
+     * @return Eine Liste von {@link SimpleMailMessage}.
      */
-    List<Message> download(MailSession mailSession);
+    List<SimpleMailMessage> download(MailSession mailSession);
 
 }
