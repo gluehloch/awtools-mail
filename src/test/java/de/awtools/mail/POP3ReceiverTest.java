@@ -44,7 +44,6 @@ import com.icegreen.greenmail.pop3.Pop3Server;
 import com.icegreen.greenmail.util.ServerSetupTest;
 
 import jakarta.mail.internet.InternetAddress;
-import org.junit.platform.commons.util.StringUtils;
 
 /**
  * Testet die Klasse {@link POP3Receiver}.

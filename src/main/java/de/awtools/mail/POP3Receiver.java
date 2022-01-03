@@ -25,9 +25,6 @@ package de.awtools.mail;
 
 import java.util.List;
 
-import jakarta.mail.Message;
-import jakarta.mail.Session;
-
 /**
  * Read mails from a POP3 account.
  * 
