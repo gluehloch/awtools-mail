@@ -1,8 +1,7 @@
 /*
- * $Id: POP3ReceiverTest.java 2333 2010-07-31 13:03:33Z andrewinkler $
  * ============================================================================
  * Project awtools-mail
- * Copyright (c) 2004-2010 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2004-2023 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -29,21 +28,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import com.icegreen.greenmail.user.GreenMailUser;
-import com.icegreen.greenmail.util.GreenMailUtil;
-import jakarta.mail.*;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
 import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.pop3.Pop3Server;
+import com.icegreen.greenmail.user.GreenMailUser;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.GreenMailUtil;
+import com.icegreen.greenmail.util.ServerSetup;
 import com.icegreen.greenmail.util.ServerSetupTest;
-
-import jakarta.mail.internet.InternetAddress;
 
 /**
  * Testet die Klasse {@link POP3Receiver}.
@@ -55,36 +56,34 @@ public class POP3ReceiverTest {
     private static final String EMAIL_USER_ADDRESS = "hascode@localhost";
     private static final String EMAIL_TO = "someone@localhost.com";
 
-    @RegisterExtension
-    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.ALL);
-
     @Tag("pop3")
     @DisplayName("Receive POP3 message")
     @Test
     void receiveMailsFromPOP3() throws Exception {
+        final GreenMail greenMail = new GreenMail(new ServerSetup[] { ServerSetupTest.SMTP.dynamicPort(), ServerSetupTest.POP3.dynamicPort()});
         greenMail.start();
 
         final String subject = GreenMailUtil.random();
         final String body = GreenMailUtil.random();
-
-        MimeMessage message = createMimeMessage(subject, body); // Construct message
-        GreenMailUser user = greenMail.setUser("test@localhost", "test", "soooosecret");
-        user.deliver(message);
+        final GreenMailUser user = greenMail.setUser("to@localhost", "test", "soooosecret");
+//        user.deliver(message);
+        
+        GreenMailUtil.sendTextEmail("to@localhost", "from@localhost", "subject", "body", greenMail.getSmtp().getServerSetup());
 
         Pop3Server pop3 = greenMail.getPop3();
         Session session = pop3.createSession();
 
         MailSession mailSession = new MailSession(session, "localhost", pop3.getPort(), user.getLogin(), user.getPassword());
-        
+
         POP3Receiver pop3Receiver = new DefaultPOP3Receiver();
         List<SimpleMailMessage> messages = pop3Receiver.download(mailSession);
 
         assertThat(messages).hasSize(1);
         SimpleMailMessage msg = messages.get(0);
 
-        assertThat(msg.from().get(0)).isEqualTo(EMAIL_TO);
-        assertThat(msg.subject()).isEqualTo(subject);
-        assertThat(messages.get(0).content()).isEqualTo(body);
+        assertThat(msg.from().get(0)).isEqualTo("from@localhost");
+        assertThat(msg.subject()).isEqualTo("subject");
+        assertThat(messages.get(0).content()).isEqualTo("body");
 
         greenMail.stop();
     }

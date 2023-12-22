@@ -12,6 +12,9 @@
             <action dev="andrewinkler" type="update" date="2021-12-30">
                 Moving to JDK 16 and Jakarta-Mail 2.0.1.
             </action>
+            <action dev="andrewinkler" type="update" date="2023-12-22">
+                Moving to JDK 21.
+            </action>
         </release>
 
         <release version="awtools-mail-1.2_a" date="2015-02-23" description="POM update">
